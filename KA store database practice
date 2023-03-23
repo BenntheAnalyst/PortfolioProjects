@@ -1,0 +1,45 @@
+CREATE TABLE BennyFashion (id TEXT, clothingtype TEXT, aisle INTEGER, price INTEGER, gender TEXT, size INTEGER);
+
+INSERT INTO BennyFashion VALUES 
+(1, "Jeans", 2, 49.00, "Mens", 32), 
+(2, "Jeans", 3, 52.00, "Women's", 4),
+(3, "Jeans", 3, 46.99, "Women's", 6),
+(4, "Jeans", 2, 36.97, "Men's", 36),
+(5, "Jeans", 2, 19.99, "Men's", 32),
+(6, "Shoes", 7, 259.00, "Men's", 10.5),
+(7, "Shoes", 7, 329.00, "Men's", 10.5),
+(8, "Shoes", 7, 109.00, "Men's", 8),
+(9, "Shoes", 7, 182.99, "Men's", 9.5),
+(10, "Shoes", 5, 200.00, "Women's", 6),
+(11, "Shoes", 5, 180.00, "Women's", 4),
+(12, "Shoes", 5, 229.00, "Women's", 4),
+(13, "Shoes", 5, 107.99, "Women's", 5),
+(14, "Shoes", 1, 126.99, "Men's", 8),
+(15, "Shoes", 1, 139.99, "Women's", 4)
+;
+
+--Items $100 or above organized by size and which aisle you can find them in
+SELECT * FROM BennyFashion
+WHERE price >= 100
+ORDER BY size desc, aisle desc;
+
+--Top 10 priciest items in the store
+SELECT clothingtype, price 
+FROM BennyFashion 
+ORDER BY price desc
+Limit 10;
+
+--Only Women's Jeans and their price
+SELECT clothingtype, gender, AVG(price) 
+FROM BennyFashion
+WHERE gender = "Women's" and clothingtype = "Jeans";
+
+--Only aisles where you can find "Women's" items. 
+Select aisle, gender
+FROM BennyFashion
+WHERE gender = "Women's";
+
+--Priciest men's items above the price of $100
+SELECT * FROM BennyFashion
+WHERE gender = "Men's" and price > 100.00
+ORDER BY size desc
