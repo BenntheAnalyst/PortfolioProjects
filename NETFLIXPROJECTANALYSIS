@@ -1,0 +1,32 @@
+--Combined two the netflix_people table with the netflix_titles table
+SELECT * FROM "CharlotteChaze/BreakIntoTech"."netflix_people" a
+LEFT JOIN "CharlotteChaze/BreakIntoTech"."netflix_titles_info" b
+ON a.show_id = b.show_id;
+
+--The amount of Movies in the the netflix_titles table 
+SELECT Count(*)
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info"
+Where type='Movie';
+
+--The latest date a movie/tv show was added to netflix
+Select MAX(date_added)
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info";
+
+--TV/Movies listed in alphabetical order
+Select title 
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info"
+ORDER BY title asc;
+
+--The director of title 'Bright Star'
+SELECT a.director, b.title 
+FROM "CharlotteChaze/BreakIntoTech"."netflix_people" a
+FULL OUTER JOIN "CharlotteChaze/BreakIntoTech"."netflix_titles_info" b
+ON a.show_id=b.show_id
+WHERE title='Bright Star';
+
+--The oldest movie in the database and its release year
+select title, release_year
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info"
+WHERE type='Movie'
+ORDER BY release_year asc
+LIMIT 1;
