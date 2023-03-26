@@ -1,0 +1,47 @@
+Create table MovieStars 
+    (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, age INTEGER, marital_status TEXT, star_sign TEXT);
+
+INSERT INTO MovieStars (name, age, marital_status, star_sign) VALUES ("Michelle Burch", 35, "Married", "Virgo");
+INSERT INTO MovieStars (name, age, marital_status, star_sign) VALUES ("Tom Starfruit", 21, "Single", "Leo");
+INSERT INTO MovieStars (name, age, marital_status, star_sign) VALUES ("Bryce Ogden", 23, "Single", "Sagitarrius");
+INSERT INTO MovieStars (name, age, marital_status, star_sign) VALUES ("Ethiopia Jones", 32, "Married", "Capricorn");
+Insert INTO MovieStars (name, age, marital_status, star_sign) VALUES ("Mindy Sue Rusell", 18, "Single", "Virgo");
+Insert INTO MovieStars (name, age, marital_status, star_sign) VALUES ("Jerry Soden", 18, "single", "Capricorn" );
+
+Create table NextMovie 
+    (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, release_year INTEGER);
+    
+INSERT INTO NextMovie (title, release_year) VALUES ("The Good and Ugly", 2023);
+INSERT INTO NextMovie (title, release_year) VALUES ("Beyond what you and I can see", 2024);
+INSERT INTO NextMovie (title, release_year) VALUES ("Road Runner 3D", 2024);
+INSERT INTO NextMovie (title, release_year) VALUES ("Prom Night", 2023);
+INSERT INTO NextMovie (title, release_year) VALUES ("Jedi", 2025);
+INSERT INTO NextMovie (title, release_year) VALUES ("Prom Night", 2023);
+
+Create Table NextMovieGenre
+    (id Integer Primary Key AUTOINCREMENT, genre TEXT);
+    
+INSERT INTO NextMovieGenre (Genre) VALUES ("Drama");
+INSERT INTO NextMovieGenre (Genre) VALUES ("Psychological Horror");
+INSERT INTO NextMovieGenre (Genre) VALUES ("Action");
+INSERT INTO NextMovieGenre (Genre) VALUES ("Drama");
+INSERT INTO NextMovieGenre (Genre) VALUES ("Fantasy");
+INSERT INTO NextMovieGenre (Genre) VALUES ("Horror");
+
+--Movie Star and the genre of their next film
+Select name, genre
+From MovieStars 
+JOIN NextMovieGenre
+ON MovieStars.id = NextMovieGenre.id;
+
+--The age, star sign and Movie title of Star's next film
+Select age, star_sign, title
+From MovieStars
+JOIN NextMovie
+ON MovieStars.id = NextMovie.id;
+
+--Title, genre and release_year of star's next project
+Select title, release_year, genre
+From NextMovie
+JOIN NextMovieGenre
+ON NextMovie.id = NextMovieGenre.id;
