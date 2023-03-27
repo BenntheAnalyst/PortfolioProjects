@@ -1,0 +1,69 @@
+select * from spotify_top50_2021$;
+
+--AVERAGE TEMPO
+SELECT AVG(tempo) as "Average Tempo"
+FROM  spotify_top50_2021$;
+
+--AVERAGE Dancibility (By artist and track)
+Select AVG(danceability) as "Average Danceability"
+FROM spotify_top50_2021$;
+
+--AVERAGE ENERGY
+Select AVG(energy) as "Average Energy"
+FROM spotify_top50_2021$;
+
+--Songs that are the most uptempo
+SELECT top(10) tempo 
+FROM spotify_top50_2021$;
+
+
+--subquery based on the most popular songs and their tempo
+SELECT top(10) artist_name, track_name
+FROM spotify_top50_2021$
+WHERE artist_name IN (
+			SELECT artist_name
+			FROM spotify_top50_2021$)
+
+--Most Popular tracks order by artist Limit to top 5
+
+SELECT TOP(5) artist_name, track_name, popularity
+FROM spotify_top50_2021$
+Order By popularity desc;
+
+---CASE STATEMENT FOR WHEN A SONG IS EXTRAORDINARY, GOOD, MEH
+SELECT *, 
+CASE 
+	WHEN popularity > 90 THEN 'EXTRAORDINARY'
+	WHEN popularity > 80 THEN 'GOOD'
+	WHEN Popularity > 70 THEN 'MEH'
+	ELSE 'Irrelevant'
+END 'Rating'
+FROM spotify_top50_2021$
+
+--CASE STATEMENT IN TERMS OF DANCEABILITY (Hit the dancefloor, stay seated, leave the party)
+Select track_name,
+CASE
+	WHEN danceability > 0.6 THEN 'Hit the Dancefloor'
+	WHEN danceability > 0.3 THEN 'Might Stay Seated'
+	ELSE 'leave the party'
+END 'Songs to dance to'
+FROM spotify_top50_2021$
+ORDER BY 'songs to dance to'
+
+--Least Popular tracks order by artist Limit to top 5
+SELECT TOP(5) artist_name, track_name, popularity
+FROM spotify_top50_2021$
+ORDER BY popularity;
+
+
+--Artists with the most songs on the top 50 chart
+SELECT top(10) artist_name, COUNT(*) as Number_of_Popular_Songs
+FROM spotify_top50_2021$
+Group By artist_name
+Order BY Number_of_Popular_Songs desc;
+
+
+--Top 5 songs based on energy and by who
+Select top(5) track_name
+FROM spotify_top50_2021$
+Order By energy desc;
