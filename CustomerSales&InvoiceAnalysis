@@ -1,0 +1,156 @@
+--Selected all customer data pertaining to the USA and Canada
+Select * FROM Customers
+WHERE COUNTRY LIKE 'USA%' or COUNTRY LIKE 'CANADA%';
+
+--Used as a refrence to help when deciding what to query later on
+Select * FROM Playlists;
+Select * FROM playlist_track;
+Select * FROM employees;
+Select * FROM invoice_items;
+SELECT * FROM invoices;
+SELECT * FROM artists;
+SELECT * FROM albums;
+SELECT * FROM media_types;
+SELECT * FROM genres;
+SELECT * FROM tracks;
+SELECT * FROM Customers;
+
+--Average invoice For USA and Canada
+SELECT BillingCountry, AVG(total) as 'Average Invoice' 
+FROM invoices
+Group By BillingCountry
+Having BillingCountry Like 'CANADA%' or BillingCountry Like 'USA%'
+ORDER By BillingCountry desc;
+
+--Sum Total Invoices For Canada and Usa
+Select BillingCountry, SUM(Total) as Total_Invoices From Invoices 
+Group By BillingCountry
+Having BillingCountry IN ('USA', 'Canada')
+Order By BillingCountry desc;
+
+--Sum total invoices per each billingaddress in both USA and Canada
+Select Distinct BillingAddress, SUM(total) as Invoice_Total, BillingCity, BillingCountry FROM Invoices
+Where BillingCountry IN ('USA', 'Canada')
+Group By BillingAddress;
+
+--TotalInvoicePerCity(USA/Canada)
+Select BillingCountry, BillingCity, BillingState, Sum(total) as TotalInvoicePerCity
+FROM Invoices 
+Group By BillingCity
+Having BillingCountry IN ('USA', 'Canada')
+Order BY BIllingCountry;
+
+--All Employees who are sales support agents
+SELECT * FROM chinook.Employees
+WHERE Title = "Sales Support Agent";
+
+--The Invoice Total, Customer name, Country, and Sales Agent name for all invoices and customers
+SELECT emp.LastName, emp.Firstname, cust.FirstName, cust.LastName, cust.Country, inv.total
+FROM chinook.employees emp 
+JOIN chinook.Customers cust ON cust.SupportRepId = emp.EmployeeId
+JOIN chinook.Invoices Inv ON Inv.CustomerId = cust.CustomerId;
+
+--Total Sales Per Employee and their tags
+Select Distinct FirstName, Lastname, title, Round(sum(total)) as total_invoices_per_employee, employeeid,
+Case 
+    WHEN Round(sum(total)) >= 800 THEN 'Top Dog'
+    WHEN Round(sum(total)) >= 750 THEN 'Improving'
+    Else 'Needs to improve'
+END 
+FROM invoices
+JOIN Customers 
+ON invoices.customerid = customers.customerid
+Join Employees
+ON customers.supportrepid = Employees.employeeid
+Group By employeeid;
+
+--Join Media_types, tracks, invoice_items, invoices, customers
+ 
+Select * From Media_types 
+FULL OUTER JOIN tracks 
+ON Media_types.mediatypeid = Tracks.mediatypeid
+FULL OUTER JOIN invoice_items
+ON Tracks.trackid = Invoice_items.trackid
+FULL OUTER JOIN invoices 
+ON Invoice_items.invoiceid = Invoices.invoiceid
+FULL OUTER JOIN customers 
+ON Invoices.customerid = Customers.customerid
+Where Country IN ('USA', 'Canada'); 
+
+--Which SupportREP had the most customers 
+Select SupportRepid, Count(*)
+From Customers
+Where SupportRepid IN (
+Select SupportRepid From Media_types 
+FULL OUTER JOIN tracks 
+ON Media_types.mediatypeid = Tracks.mediatypeid
+FULL OUTER JOIN invoice_items
+ON Tracks.trackid = Invoice_items.trackid
+FULL OUTER JOIN invoices 
+ON Invoice_items.invoiceid = Invoices.invoiceid
+FULL OUTER JOIN customers 
+ON Invoices.customerid = Customers.customerid
+Where Country IN ('USA', 'Canada')
+) 
+Group By SupportRepid;
+
+
+--Song names of tracks sold 
+With track_info_cte as
+(Select name, composer, unitprice From tracks)
+Select name from track_info_cte;
+
+--Total 2009 Sales for USA and Canada  
+WITH INVOICE_2009_CTE AS 
+(SELECT InvoiceDate, Total, BillingCountry
+From Invoices
+WHERE InvoiceDate Between '2009-01-01' and '2009-12-31' and 
+BillingCountry IN ('USA', 'Canada')
+ORDER BY BillingCountry)
+Select SUM(TOTAL) as TOTAL_2009_INVOICES, BillingCountry
+FROM INVOICE_2009_CTE
+GROUP BY BillingCountry;
+
+--Total 2010 Sales for USA and Canada
+WITH INVOICE_2010_CTE AS 
+(SELECT InvoiceDate, Total, BillingCountry
+From Invoices
+WHERE InvoiceDate Between '2010-01-01' and '2010-12-31' and 
+BillingCountry IN ('USA', 'Canada')
+ORDER BY BillingCountry)
+Select SUM(TOTAL) as TOTAL_2010_INVOICES, BillingCountry
+FROM INVOICE_2010_CTE
+GROUP BY BillingCountry;
+
+--Total 2011 Sales for USA and Canada
+WITH INVOICE_2011_CTE AS 
+(SELECT InvoiceDate, Total, BillingCountry
+From Invoices
+WHERE InvoiceDate Between '2011-01-01' and '2011-12-31' and 
+BillingCountry IN ('USA', 'Canada')
+ORDER BY BillingCountry)
+Select SUM(TOTAL) as TOTAL_2011_INVOICES, BillingCountry
+FROM INVOICE_2011_CTE
+GROUP BY BillingCountry;
+
+--Total 2012 Sales for USA and Canada
+WITH INVOICE_2012_CTE AS 
+(SELECT InvoiceDate, Total, BillingCountry
+From Invoices
+WHERE InvoiceDate Between '2012-01-01' and '2012-12-31' and 
+BillingCountry IN ('USA', 'Canada')
+ORDER BY BillingCountry)
+Select SUM(TOTAL) as TOTAL_2012_INVOICES, BillingCountry
+FROM INVOICE_2012_CTE
+GROUP BY BillingCountry;
+
+--Total 2013 Sales for USA and Canada
+WITH INVOICE_2013_CTE AS 
+(SELECT InvoiceDate, Total, BillingCountry
+From Invoices
+WHERE InvoiceDate Between '2013-01-01' and '2013-12-31' and 
+BillingCountry IN ('USA', 'Canada')
+ORDER BY BillingCountry)
+Select SUM(TOTAL) as TOTAL_2013_INVOICES, BillingCountry
+FROM INVOICE_2013_CTE
+GROUP BY BillingCountry;
